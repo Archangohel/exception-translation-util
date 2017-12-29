@@ -1,6 +1,7 @@
 package exception.translation.core.main.springapp;
 
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
+import exception.translation.core.exceptions.TranslatedException;
 import exception.translation.core.services.ExceptionTranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,18 @@ public class SpringBootApp {
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         ExceptionTranslationService exceptionTranslationService = context.getBean(ExceptionTranslationService.class);
         Exception mySqlException = exceptionTranslationService.translate(generateMySqlException());
-        logger.error("Transformed mysql exception {}", mySqlException);
-        Exception newException = exceptionTranslationService.translate(generatRuntimeException());
-        logger.error("Other exception {}", newException);
+        logException(mySqlException);
+        Exception newException = exceptionTranslationService.translate(generateRuntimeException());
+        logException(newException);
+    }
 
+    private static void logException(Exception exception) {
+        if (exception instanceof TranslatedException) {
+            logger.error("Transformed mysql exception. Code [{}] , Message [{}]", ((TranslatedException) exception).getExceptionCode(),
+                    ((TranslatedException) exception).getExceptionMessage(), exception);
+        } else {
+            logger.error("Other exception. ", exception);
+        }
     }
 
     private static Exception generateMySqlException() {
@@ -30,7 +39,7 @@ public class SpringBootApp {
     }
 
 
-    private static Exception generatRuntimeException() {
+    private static Exception generateRuntimeException() {
         return new RuntimeException("Test Exception");
     }
 

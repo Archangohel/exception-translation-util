@@ -36,7 +36,7 @@ public abstract class AbstractExceptionTranslator implements ExceptionTranslator
         Map<String, String> parsedExceptionCodes = getExceptionParser().parse(exception);
         if (parsedExceptionCodes != null && !parsedExceptionCodes.isEmpty()) {
             String exceptionCode = exceptionCodeTranslator.translate(parsedExceptionCodes);
-            if (!StringUtils.isEmpty(exception)) {
+            if (!StringUtils.isEmpty(exceptionCode)) {
                 ExceptionMetadata configuredExceptionMetadata = exceptionLookupService.lookupByCode(exceptionCode);
                 if (configuredExceptionMetadata != null) {
                     // TODO: work on converting the message.

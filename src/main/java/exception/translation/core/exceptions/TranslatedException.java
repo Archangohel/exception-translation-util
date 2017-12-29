@@ -14,6 +14,8 @@ public class TranslatedException extends RuntimeException {
         this.exceptionMessage = exceptionMessage;
     }
 
+
+
     public String getExceptionCode() {
         return exceptionCode;
     }
@@ -28,5 +30,13 @@ public class TranslatedException extends RuntimeException {
 
     public void setExceptionMessage(String exceptionMessage) {
         this.exceptionMessage = exceptionMessage;
+    }
+
+    @Override
+    public String toString() {
+        return "TranslatedException{" +
+                "exceptionCode='" + exceptionCode + '\'' +
+                ", exceptionMessage='" + exceptionMessage + '\'' +
+                "} " + super.toString();
     }
 }
